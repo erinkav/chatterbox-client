@@ -13,7 +13,7 @@ $(document).ready(function() {
     const messageObj = {};
     messageObj.username = username;
     messageObj.text = $('.userMessage').val();
-    messageObj.roomname = 'fred fan club'; 
+    messageObj.roomname = currentRoomname; 
     sendMessage(messageObj); 
   });
   $('.getMessages').on('click', () => {
@@ -38,7 +38,7 @@ $(document).ready(function() {
     refresh();  
   });
 
-  $(document).on('click', '.username', () => {
+  $(document).on('click', '.username', function () {
     friends[$(this).text()] = $(this).text();
     refresh(); 
   }); 
@@ -71,9 +71,9 @@ const updateBody = (data) => {
 
       let P;
       if (val.username in friends) {
-        P = "<p style='font-weight:bold'> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
+        P = '<p style="font-weight:bold"> <span class="username">' + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
       } else {
-        P = "<p> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
+        P = '<p> <span class="username">' + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
       }
 
       if (currentRoomname === 'home') {
@@ -95,10 +95,10 @@ const sendMessage = (message) => {
     type: 'POST',
     data: JSON.stringify(message),
     contentType: 'application/json',
-    success:  (message) => {
+    success: (message) => {
       console.log('chatterbox: Message sent');
     },
-    error:  (message) => {
+    error: (message) => {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to send message', data);
     }
@@ -106,15 +106,24 @@ const sendMessage = (message) => {
 };
 
 const getMessages = () => {
+  var filter = () => {
+    if (currentRoomname === 'home') {
+      return ''; 
+    } else {
+      return 'where={"roomname":"' + currentRoomname + '"}'; 
+    }
+  }; 
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
-    url: 'https://api.parse.com/1/classes/messages',
+    url: 'https://api.parse.com/1/classes/messages/', 
     type: 'GET',
+    data: filter(),  
     contentType: 'application/json',
-    success:  (data) => {
+    success: (data) => {
+      console.log(data.results); 
       updateBody(data.results); 
     },
-    error:  (data) => {
+    error: (data) => {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to send message', data);
     }
