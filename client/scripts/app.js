@@ -2,7 +2,10 @@
 var username; 
 var currentRoomname = 'home';
 
+var friends = {};
+
 $(document).ready( function() {
+  refresh();
   $('.sendMessage').on('click', function () {
     var messageObj = {};
     messageObj.username = username;
@@ -26,11 +29,17 @@ $(document).ready( function() {
     currentRoomname = 'home';
     refresh(); 
   });
+
+  $('.makeNewRoom').on('click', () => {
+    changeRoom($('.roomName').val()); 
+    refresh();  
+  });
+
+  //$(document).clic
 }); 
 
 var refresh = function() {
-  $('option').remove();
-  $('select').append('<option>' + 'Select Room:' + '</option>');
+  //$('option').remove();
   $('p').remove();
   getMessages(); 
 };
@@ -47,10 +56,8 @@ var nameChange = function (name) {
 var changeRoom = function(room) {
   currentRoomname = room; 
 }; 
-
+var rooms = {}; 
 var updateBody = function(data) {
-  var rooms = {}; 
-  
   try {
     _.each(data, function (val) {
       if (!(val.roomname in rooms)) {
@@ -58,11 +65,11 @@ var updateBody = function(data) {
         if (escapeString(val.roomname) !== undefined) {
           $('.rooms').append('<option>' + escapeString(val.roomname) + '</option>'); 
         }
-      } 
+      }
       if (currentRoomname === 'home') {
-        $('#chats').append('<p>' + escapeString(val.username) + ' ' + escapeString(val.text) + '</p>');
+        $('#chats').append("<p> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>');
       } else if (val.roomname === currentRoomname) {
-        $('#chats').append('<p>' + escapeString(val.username) + ' ' + escapeString(val.text) + '</p>'); 
+        $('#chats').append("<p> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>');
       }
     }); 
   } catch (e) {
@@ -127,5 +134,3 @@ var escapeString = function(string) {
     console.log(e);
   }
 };
-
-refresh();
