@@ -24,7 +24,23 @@ $(document).ready(function() {
   }); 
 
   $('select').change(() => { 
+    // _.each($('li'), function (element) {
+    //   var link = $(this).attr('href'); 
+    //   if (link === currentRoomname) {
+    //     console.log($(this)); 
+    //     $(this).remove(); 
+    //   }
+    // }); 
+    $('li:contains("' + currentRoomname+ '")').remove(); 
     changeRoom($('select option:selected').val()); 
+    $('ul').append('<li>'+currentRoomname + '</li>');//<a href="' + currentRoomname+ '">' 
+    refresh(); 
+  }); 
+
+  $('li').on('click', () => {
+    // selectRoom(); 
+    debugger; 
+    changeRoom($('li:contains("' + currentRoomname+ '")').text()); 
     refresh(); 
   }); 
 
@@ -145,6 +161,7 @@ const escapeString = (string) => {
       string = string.replace('@', '');
       string = string.replace('(', '');
       string = string.replace('`', '');
+      string = string.trim(); 
       return string;
     }
   } catch (e) {
