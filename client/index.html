@@ -8,6 +8,8 @@
     <!-- dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+
     <!-- your scripts -->
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
@@ -16,6 +18,20 @@
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+      <div class='home'>
+        <input type='submit' value='Home'></input>
+      </div>
+      <div class="userInput">
+        <input type="text" class="userMessage"></input>
+        <input type="submit" class="sendMessage" value="Send Message"></input>
+        <input type="submit" class="getMessages" value="Get Messages"></input>
+      </div>
+      <div class="options"> 
+        <input type='text' class='updatedName'></input>
+        <input type="submit" value="Update Name" class="submitName"></input>
+        <select class='rooms'>
+        </select>
+      </div>
     </div>
     <div id="chats"></div>
   </body>
