@@ -88,3 +88,11 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+.settings {
+    display: block;
+    padding: 10px;
+}
+
+.settingsMenu {
+    background: gray;
+}

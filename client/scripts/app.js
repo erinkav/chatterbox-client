@@ -15,6 +15,7 @@ $(document).ready(function() {
     messageObj.text = $('.userMessage').val();
     messageObj.roomname = currentRoomname; 
     sendMessage(messageObj); 
+    refresh(); 
   });
   $('.getMessages').on('click', () => {
     refresh(); 
@@ -33,14 +34,12 @@ $(document).ready(function() {
     // }); 
     $('li:contains("' + currentRoomname+ '")').remove(); 
     changeRoom($('select option:selected').val()); 
-    $('ul').append('<li>'+currentRoomname + '</li>');//<a href="' + currentRoomname+ '">' 
+    $('ul').append('<li>' + currentRoomname + '</li>');//<a href="' + currentRoomname+ '">' 
     refresh(); 
   }); 
 
-  $('li').on('click', () => {
-    // selectRoom(); 
-    debugger; 
-    changeRoom($('li:contains("' + currentRoomname+ '")').text()); 
+  $('ul').on('click', function () {
+    changeRoom($(this).text()); 
     refresh(); 
   }); 
 
@@ -58,6 +57,10 @@ $(document).ready(function() {
     friends[$(this).text()] = $(this).text();
     refresh(); 
   }); 
+
+  $('.settings').click(function() {
+    $('.settingsMenu').toggle(); 
+  });
 }); 
 
 const refresh = () => { 
@@ -70,6 +73,7 @@ const nameChange = (name) => {
 }; 
 
 const changeRoom = (room) =>{
+  debugger; 
   currentRoomname = room; 
 };
 
@@ -124,9 +128,9 @@ const sendMessage = (message) => {
 const getMessages = () => {
   var filter = () => {
     if (currentRoomname === 'home') {
-      return ''; 
+      return '{ order: "-createdAt"}'; 
     } else {
-      return 'where={"roomname":"' + currentRoomname + '"}'; 
+      return {where: {'roomname': currentRoomname}, order: '-createdAt'}; 
     }
   }; 
   $.ajax({

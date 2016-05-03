@@ -13,11 +13,21 @@
     <!-- your scripts -->
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+      <div class='settings'>
+        <input type="submit" value="Settings"></input>
+         <div class='settingsMenu'>
+          <input type='text' class='updatedName'></input>
+          <input type="submit" value="Update Name" class="submitName"></input>
+          <input type="text" class="roomName"></input>
+          <input type="submit" class="makeNewRoom" value="Make Room"></input>
+         </div>
+      </div>
       <div class='home'>
         <input type='submit' value='Home'></input>
       </div>
@@ -27,13 +37,9 @@
         <input type="submit" class="getMessages" value="Get Messages"></input>
       </div>
       <div class="options"> 
-        <input type='text' class='updatedName'></input>
-        <input type="submit" value="Update Name" class="submitName"></input>
         <select class='rooms'>
-        <option>Select Room:</option>
+          <option>Select Room:</option>
         </select>
-        <input type="text" class="roomName"></input>
-        <input type="submit" class="makeNewRoom" value="Make Room"></input>
       </div>
     </div>
     <div class="tabs">
