@@ -1,31 +1,34 @@
 // YOUR CODE HERE:
-var username; 
-var currentRoomname = 'home';
+// let username; 
+// let currentRoomname = 'home';
 
-var friends = {};
+// let friends = {};
+let [username, currentRoomname, friends] = [undefined, 'home', {}]; 
 
-$(document).ready( function() {
+console.log(username, currentRoomname, friends); 
+
+$(document).ready(function() {
   refresh();
-  $('.sendMessage').on('click', function () {
-    var messageObj = {};
+  $('.sendMessage').on('click', () => {
+    const messageObj = {};
     messageObj.username = username;
     messageObj.text = $('.userMessage').val();
     messageObj.roomname = 'fred fan club'; 
     sendMessage(messageObj); 
   });
-  $('.getMessages').on('click', function () {
+  $('.getMessages').on('click', () => {
     refresh(); 
   });
-  $('.submitName').on('click', function () {
+  $('.submitName').on('click', () => {
     nameChange($('.updatedName').val()); 
   }); 
 
-  $('select').change(function() {
+  $('select').change(() => { 
     changeRoom($('select option:selected').val()); 
     refresh(); 
   }); 
 
-  $('.home').on('click', function () {
+  $('.home').on('click', () => {
     currentRoomname = 'home';
     refresh(); 
   });
@@ -35,34 +38,30 @@ $(document).ready( function() {
     refresh();  
   });
 
-  $(document).on('click', '.username', function () {
+  $(document).on('click', '.username', () => {
     friends[$(this).text()] = $(this).text();
     refresh(); 
   }); 
 }); 
 
-var refresh = function() {
-  //$('option').remove();
+const refresh = () => { 
   $('p').remove();
   getMessages(); 
 };
-// var message = {
-//   username: 'shawndrost',
-//   text: 'trololo',
-//   roomname: '4chan'
-// };
 
-var nameChange = function (name) {
+const nameChange = (name) => {
   username = name; 
 }; 
 
-var changeRoom = function(room) {
+const changeRoom = (room) =>{
   currentRoomname = room; 
-}; 
-var rooms = {}; 
-var updateBody = function(data) {
+};
+
+const rooms = {}; 
+
+const updateBody = (data) => {
   try {
-    _.each(data, function (val) {
+    _.each(data, (val) => {
       if (!(val.roomname in rooms)) {
         rooms[val.roomname] = val.roomname;
         if (escapeString(val.roomname) !== undefined) {
@@ -70,7 +69,7 @@ var updateBody = function(data) {
         }
       }
 
-      var P;
+      let P;
       if (val.username in friends) {
         P = "<p style='font-weight:bold'> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
       } else {
@@ -83,52 +82,46 @@ var updateBody = function(data) {
       } else if (val.roomname === currentRoomname) {
         $('#chats').append(P);
       }
-
-      // if (val.username in friends) {
-      //   $('p:contains(' + val.username + ')').css('font-weight', 'bold'); 
-      // }
     }); 
   } catch (e) {
     console.dir(e);
   }
 };
 
-var sendMessage = function(message) { 
+const sendMessage = (message) => { 
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
     url: 'https://api.parse.com/1/classes/messages',
     type: 'POST',
     data: JSON.stringify(message),
     contentType: 'application/json',
-    success: function (message) {
+    success:  (message) => {
       console.log('chatterbox: Message sent');
     },
-    error: function (message) {
+    error:  (message) => {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to send message', data);
     }
   });
 };
 
-var getMessages = function() {
+const getMessages = () => {
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
     url: 'https://api.parse.com/1/classes/messages',
     type: 'GET',
     contentType: 'application/json',
-    success: function (data) {
-      console.log(data.results); 
+    success:  (data) => {
       updateBody(data.results); 
     },
-    error: function (data) {
+    error:  (data) => {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to send message', data);
     }
   });
 };
 //Escaping &, <, >, ", ', `, , !, @, $, %, (, ), =, +, {, }, [, and ] is almost enough
-var escapeString = function(string) {
-  console.log(string);
+const escapeString = (string) => {
   try {
     if (string === null || string === undefined) {
       return undefined; 
@@ -146,7 +139,6 @@ var escapeString = function(string) {
       return string;
     }
   } catch (e) {
-    console.log(string);
     console.log(e);
   }
 };
