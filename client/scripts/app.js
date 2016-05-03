@@ -35,7 +35,10 @@ $(document).ready( function() {
     refresh();  
   });
 
-  //$(document).clic
+  $(document).on('click', '.username', function () {
+    friends[$(this).text()] = $(this).text();
+    refresh(); 
+  }); 
 }); 
 
 var refresh = function() {
@@ -66,11 +69,24 @@ var updateBody = function(data) {
           $('.rooms').append('<option>' + escapeString(val.roomname) + '</option>'); 
         }
       }
-      if (currentRoomname === 'home') {
-        $('#chats').append("<p> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>');
-      } else if (val.roomname === currentRoomname) {
-        $('#chats').append("<p> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>');
+
+      var P;
+      if (val.username in friends) {
+        P = "<p style='font-weight:bold'> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
+      } else {
+        P = "<p> <span class='username'>" + escapeString(val.username) + '</span>' + ': ' + '<span class="message">' + escapeString(val.text) + '</span></p>';
       }
+
+      if (currentRoomname === 'home') {
+        $('#chats').append(P);
+        
+      } else if (val.roomname === currentRoomname) {
+        $('#chats').append(P);
+      }
+
+      // if (val.username in friends) {
+      //   $('p:contains(' + val.username + ')').css('font-weight', 'bold'); 
+      // }
     }); 
   } catch (e) {
     console.dir(e);
